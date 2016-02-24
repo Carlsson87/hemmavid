@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Category;
+use App\Account;
 use App\Expense;
 use Carbon\Carbon;
 
@@ -17,10 +18,16 @@ class BudgetController extends Controller
         return view('budget', compact('categories'));
     }
 
-    public function create()
+    public function create($token)
     {
-        $categories = $this->request->user()->categories;
-        $auth_token = $this->request->user()->token;
+        $account = Account::whereToken($token)->first();
+
+        if ( ! $account) {
+            return abort(404);
+        }
+
+        $categories = $account->categories;
+        $auth_token = $account->token;
 
         return view('add-expense', compact('categories', 'auth_token'));
     }
