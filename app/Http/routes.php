@@ -18,9 +18,11 @@ Route::get('auth/{token}', function($token) {
     return redirect('/')->withCookie(cookie()->forever('auth_token', $token));
 });
 
+// The public shortcut to adding expenses.
+Route::get('add-expense/{token}', 'BudgetController@create');
+
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'BudgetController@index');
-    Route::get('add-expense/{token}', 'BudgetController@create');
     Route::post('add', 'BudgetController@store');
     Route::post('categories', 'BudgetController@createCategory');
     Route::post('categories/{category_id}/expenses', 'BudgetController@addExpense');
