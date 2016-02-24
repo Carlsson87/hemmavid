@@ -1,5 +1,7 @@
 <?php
 
+use App\Account;
+
 // The login page.
 Route::get('login', function() {
     return view('login');
@@ -7,20 +9,42 @@ Route::get('login', function() {
 
 // Account creation.
 Route::post('account', function() {
-    return \App\Account::create(['token' => str_random(50)]);
+    return Account::create(['token' => str_random(50)]);
 });
 
 // Login action.
 Route::get('auth/{token}', function($token) {
-    if ( ! \App\Account::whereToken($token)->exists()) {
+
+    // Check if the account exists.
+    if ( ! Account::whereToken($token)->exists()) {
         return abort(404);
     }
-    return redirect('/')->withCookie(cookie()->forever('auth_token', $token));
+
+    // Set The Cookie™
+    $cookie = cookie()->forever('auth_token', $token);
+
+    // Redirect to the home screen.
+    return redirect('/')->withCookie($cookie);
 });
 
 // The public shortcut to adding expenses.
-Route::get('add-expense/{token}', 'BudgetController@create');
+Route::get('add-expense/{token}', function($token) { 
 
+    // Find the account.
+    $account = Account::whereToken($token)->first();
+
+    // Abort if the account doesn't exist.
+    if ( ! $account) {
+        return abort(404);
+    }
+
+    return view('add-expense', [
+        'categories' => $account->categories,
+        'auth_token' => $token
+    ]);
+});
+
+// The protected routes.
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'BudgetController@index');
     Route::post('add', 'BudgetController@store');
