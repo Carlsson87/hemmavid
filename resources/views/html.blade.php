@@ -26,11 +26,6 @@
                     Budget
                   </a>
                 </li>
-                <li>
-                    <a href="/categories">
-                        Kategorier
-                    </a>
-                </li>
               </ul>
             </div>
           </div>

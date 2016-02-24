@@ -53,7 +53,7 @@ class BudgetController extends Controller
 
         $this->request->user()->categories()->create($this->request->all());
 
-        return redirect('categories');
+        return redirect()->back();
     }
 
     public function addExpense($category_id)

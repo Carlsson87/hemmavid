@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-8">
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading clearfix">
                 <h3 class="panel-title">
                     Budget
                 </h3>
@@ -15,10 +15,15 @@
                         <label>{{ $category->name }}</label>
                         <label class="pull-right">{{ $category->budget }}kr</label>
                         <div class="progress">
-                            <div class="progress-bar" style="width: {{ $category->current_percentage }}%;"></div>
+                            <div class="progress-bar progress-bar-success" style="line-height: 16px; width: {{ $category->current_percentage }}%;" role="progressbar" aria-valuenow="{{ $category->current_total }}" aria-valuemin="0" aria-valuemax="{{ $category->budget }}">
+    {{ $category->current_total }}kr
+</div>
                         </div>
                     </div>
                 @endforeach
+            </div>
+            <div class="panel-footer clearfix">
+                <button class="pull-right btn btn-primary" type="button" data-toggle="modal" data-target="#add-category-modal" style="line-height: 1">Ny kategori</button>
             </div>
         </div>
     </div>
@@ -61,6 +66,35 @@
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Ny kategori</h4>
+      </div>
+    <form action="/categories" method="post">
+      <div class="modal-body">
+            <div class="form-group">
+                <label for="name">Namn</label>
+                <input type="text" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="budget">Budget</label>
+                <div class="input-group">
+                    <input type="number" name="budget" class="form-control">
+                    <span class="input-group-addon">kr</span>
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+        <input type="submit" value="Spara" class="btn btn-primary">
+      </div>
+    </form>
+    </div>
+  </div>
 </div>
 @stop
 
