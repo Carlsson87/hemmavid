@@ -34,7 +34,18 @@ class BudgetController extends Controller
             "cost" => "required"
         ]);
 
-        return Expense::create($this->request->all());
+        $exp = Expense::create($this->request->only([
+            'description',
+            'category_id',
+            'cost',
+            'date',
+        ]));
+
+        if ($this->request->wantsJson()) {
+            return $exp;
+        }
+
+        return redirect()->back();
     }
 
     public function categories()
@@ -59,7 +70,12 @@ class BudgetController extends Controller
     public function addExpense($category_id)
     {
         $cat = Category::find($category_id);
-        $exp = $cat->expenses()->create($this->request->all());
+        $exp = $cat->expenses()->create($this->request->only([
+            'description',
+            'category_id',
+            'cost',
+            'date',
+        ]));
 
         return $cat;
     }

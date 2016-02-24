@@ -25,8 +25,6 @@ class Authenticate
             }
         }
 
-        $response = $next($request);
-
-        return $response->withCookie(cookie()->forever('auth_token', $request->user()->token));
+        return $next($request);
     }
 }

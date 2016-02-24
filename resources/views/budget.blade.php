@@ -112,6 +112,7 @@
             
         $.post('/categories/' + category_id + '/expenses', data, function(res) {
             $('#progress-' + res.id + ' .progress-bar').css({ width: res.current_percentage + '%' });
+            $('#progress-' + res.id + ' .progress-bar').text(res.current_total + 'kr');
         });
     });
 @stop
