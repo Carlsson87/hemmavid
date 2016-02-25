@@ -22,7 +22,7 @@ class Category extends Model
 
     public function getCurrentTotalAttribute()
     {
-        $day = Carbon::create(null, null, 25);
+        $day = Carbon::create(null, null, 25, 0, 0, 0);
 
         if ($day->isPast()) {
             $start = $day;
