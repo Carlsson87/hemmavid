@@ -1,28 +1,30 @@
 @extends('html')
 
 @section('content')
+<style type="text/css" media="all">
+    .Budget {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background-color: #eee;
+        z-index: -1;
+    }
+</style>
 <div class="row">
     <div class="col-xs-12">
-        @foreach($categories as $category)
-            <div class="panel panel-default category-modal-toggle" data-category="{{ $category->id }}" id="category-{{ $category->id }}" style="cursor: pointer;">
-                <div class="panel-body">
-                    <h3 class="panel-title">
-                        {{ $category->name }}
-                        <span class="pull-right">{{ $category->budget }}kr</span>
-                    </h3>
-                    <div class="form-group" id="progress-{{ $category->id }}" style="margin-bottom: 0;">
-                        <div class="progress" style="margin-bottom: 0;">
-                            <div class="progress-bar progress-bar-success" style="line-height: 16px; width: {{ $category->current_percentage }}%;" role="progressbar" aria-valuenow="{{ $category->current_total }}" aria-valuemin="0" aria-valuemax="{{ $category->budget }}">
-    {{ $category->current_total }}kr
-</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
         <div class="panel panel-default">
-            <div class="panel-body">
-                <button class="btn btn-block btn-link" type="button" data-toggle="modal" data-target="#add-category-modal">Ny kategori</button>
+            <div class="list-group">
+                @foreach($categories as $category)
+                    <div class="list-group-item" style="z-index: 0;">
+                        <div class="Budget" style="width: {{ $category->current_percentage }}%;"></div>
+                        <span class="badge">{{ $category->budget }}kr</span>
+                        <span style="z-index: 2;">{{ $category->name }}</span>
+                    </div>
+                @endforeach
+                <div class="list-group-item">
+                    <button class="btn btn-block btn-link" type="button" data-toggle="modal" data-target="#add-category-modal">Ny kategori</button>
+                </div>
             </div>
         </div>
     </div>
@@ -112,7 +114,6 @@
         $form.find('input').val("");    
         $.post('/categories/' + category_id + '/expenses', data, function(res) {
             $('#progress-' + res.id + ' .progress-bar').css({ width: res.current_percentage + '%' });
-            $('#progress-' + res.id + ' .progress-bar').text(res.current_total + 'kr');
         });
     });
     $('.category-modal-toggle').click(function() {
