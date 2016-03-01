@@ -39,20 +39,19 @@ class BudgetController extends Controller
             "category_id" => "required",
             "date" => "required",
             "cost" => "required"
+        ], [
+            "description.required" => "Du måste ange en beskrivning",
+            "category_id.required" => "Du måste välja en kategori",
+            "date.required" => "Du måste ange ett datum",
+            "cost.required" => "Du måste ange en kostnad"
         ]);
 
-        $exp = Expense::create($this->request->only([
+        return Expense::create($this->request->only([
             'description',
             'category_id',
             'cost',
             'date',
         ]));
-
-        if ($this->request->wantsJson()) {
-            return $exp;
-        }
-
-        return redirect()->back();
     }
 
     public function categories()
