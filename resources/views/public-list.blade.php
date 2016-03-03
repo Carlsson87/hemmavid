@@ -47,7 +47,7 @@
     <script type="text/javascript" src="/bootstrap.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
-        var socket = io({{ url('/') }}':8001');
+        var socket = io('{{ url('/') }}:8001');
         socket.emit('joining', '{{ $auth_token }}');
         socket.on('update.item', function(item) {
             $('.item--' + item.id).prop('checked', item.checked);
